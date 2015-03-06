@@ -18,6 +18,11 @@
 *               
 **********************************************************************************/
 
+#include <iostream>
+#include <vector>
+#include <map>
+using namespace std;
+
 class Solution {
 public:
     vector<int> twoSum(vector<int> &numbers, int target) {
@@ -35,3 +40,18 @@ public:
         return result;
     }
 };
+
+
+int main(int argc, const char *argv[])
+{
+    Solution s;
+    vector<int> nums = {
+        2, 7, 11 ,15
+    };
+    int target = 17;
+
+    vector<int> out = s.twoSum(nums, target);
+    for(auto i : out) cout << i << " ";
+    cout << endl;
+    return 0;
+}
