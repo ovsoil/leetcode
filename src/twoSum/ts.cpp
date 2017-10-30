@@ -4,25 +4,18 @@
 
 using namespace std;
 
-class Solution
-{
+class Solution {
 public:
-    vector<int> twoSum(vector<int> &nums, int target)
-    {
-        unordered_map<int, int> mapping;
-        vector<int> result;
-        for (int i = 0; i < nums.size(); i++) {
-            if (mapping.find(nums[i]) == mapping.end())
-            {
-                mapping[target - nums[i]] = i;
-            }
+    vector<int> twoSum(vector<int>& nums, int target) {
+        unordered_map<int, int> map;
+        for(auto i = 0; i < nums.size(); ++i){
+            int complement = target - nums[i];
+            if(map.find(complement) == map.end())
+                map[nums[i]] = i;
             else
-            {
-                result.push_back(mapping[nums[i]] + 1);
-                result.push_back(i + 1);
-                return result;
-            }
+                return {map[complement], i};
         }
+        return vector<int>();
     }
 };
 
