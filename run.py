@@ -27,9 +27,9 @@ def build_map():
 
 
 @click.command()
-@click.argument('question_name')
-def gen(question_name):
-    path = os.path.join('src', question_name)
+@click.argument('problem_name')
+def gen(problem_name):
+    path = os.path.join('src', problem_name)
     if not os.path.exists(path):
         os.mkdir(path)
     open('{}/solution.hpp'.format(path), 'a').close()
@@ -38,12 +38,12 @@ def gen(question_name):
 
 @click.command()
 @click.option('--debug', '-d', is_flag=True)
-@click.argument('question_id')
-def test(question_id, debug):
+@click.argument('problem_id')
+def test(problem_id, debug):
     click.echo('Test Start...')
 
     qmap = build_map()
-    cwd = os.path.join(SRC, qmap[question_id])
+    cwd = os.path.join(SRC, qmap[problem_id])
 
     def run_command(args):
         #  click.echo(' '.join(args))
