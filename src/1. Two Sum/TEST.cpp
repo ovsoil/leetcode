@@ -5,7 +5,7 @@
 
 TEST_CASE( "TC for Two Sum", "[array]" ) {
     Solution s;
+    vector<int> v;
 
-    vector<int> v = {1, 3, 4, 5, 6, 7, 2};
-    REQUIRE( s.twoSum(v, 11) == vector<int>({2, 4}) );
+    REQUIRE( s.twoSum({1, 3, 4, 5, 6, 7, 2}, 11) == vector<int>({3, 4}) );
 }
