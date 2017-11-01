@@ -1,15 +1,15 @@
 # My leetcode practice with a unit test framework
 
-:sweat_drops:　Write leetcode code and test them easily with full unit test features!　:sweat_drops:
+ *Write leetcode code and test them easily with full unit test features!*
 
 ## Example
 
 - Use [`Catch`](https://github.com/philsquared/Catch) as unit-test framework
 
-- Source files for each question in project should strtucured like:
+- Source files for each leetcode problem in project should strtucured like:
 
     ```
-    $id. $question_title
+    $id. $problem_title
     ├──  solution.hpp    # implement the solution
     └──  TEST.cpp        # UNIT Testcases
     ```
@@ -67,10 +67,11 @@
 
 ## Get the framework
 
-Checkout the branch [framework](https://github.com/ovsoil/leetcode/tree/framework)  :facepunch:
+Checkout the branch [framework](https://github.com/ovsoil/leetcode/tree/framework):
 
 
 ## TODOS
 
+- More programing language support (python, c, java)
 - Auto get description of Problems from the leetcode web
 - Sumit to leetcode web and get Run Time
