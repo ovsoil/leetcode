@@ -43,10 +43,12 @@ def test(problem_id, debug):
     click.echo('Test Start...')
 
     qmap = build_map()
+    if problem_id not in qmap:
+        print("There is no solution with problem id: {}".format(problem_id))
+        return
     cwd = os.path.join(SRC, qmap[problem_id])
 
     def run_command(args):
-        #  click.echo(' '.join(args))
         return subprocess.call(args, cwd=cwd)
 
     compile_cmd = [CC, UNITTEST, '-o', TARGET, INCS, CFLAGS]

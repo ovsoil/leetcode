@@ -5,6 +5,7 @@
 #include <map>
 #include <unordered_map>
 #include <iostream>
+#include <stack>
 using namespace std;
 
 struct ListNode {
