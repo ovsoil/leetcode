@@ -1,29 +1,41 @@
 # My leetcode practice with a unit test framework
 
- *Write leetcode code and test them easily with full unit test features!*
+ *Write leetcode code with C++11 and test them easily with full unit test features!*
+ Use [`Catch2`](https://github.com/catchorg/Catch2) as unit-test framework
 
-## Example
+## Usage
 
-- Use [`Catch`](https://github.com/philsquared/Catch) as unit-test framework
+- For each leetcode problem, generate source files at the `src` directory through command `./run.py gen "$id. $probem_title"`
 
-- Source files for each leetcode problem in project should strtucured like:
-
+    ```bash
+    # ./run.py gen "$id. $probem_title"
+    ./run.py gen "1. Two Sum"
+    ```
+    The generated files strtucured like:
     ```
     $id. $problem_title
     ├──  solution.hpp    # implement the solution
     └──  TEST.cpp        # UNIT Testcases
     ```
 
-    - You can generate this structure in `src` directory through command
+- Now. Write Your Code for test and solution!
 
-        ```bash
-        ./run.py gen "1. Two Sum"
-        ```
+    ```cpp
+    /** 1. Two Sum/TEST.cpp **/
+    #include "../../framework/header.hpp"
+    #include "../../framework/common.hpp"
+    #include "solution.hpp"
 
-- Now. Write Your Code !
+    TEST_CASE( "TC for Two Sum", "[leetcode]" ) {
+        Solution s;
 
-    :thumbsup: which may looks like,
-    ```c++
+        vector<int> v = {1, 3, 4, 5, 6, 7, 2};
+        REQUIRE( s.twoSum(v, 11) == vector<int>({2, 4}) );
+    }
+
+    ```
+
+    ```cpp
     /** 1. Two Sum/solution.hpp **/
     class Solution {
     public:
@@ -39,21 +51,6 @@
             return vector<int>();
         }
     };
-    ```
-    ```c++
-    /** 1. Two Sum/TEST.cpp **/
-    #include "../../framework/header.hpp"
-    #include "../../framework/common.hpp"
-    #include "solution.hpp"
-
-
-    TEST_CASE( "TC for Two Sum", "[array]" ) {
-        Solution s;
-
-        vector<int> v = {1, 3, 4, 5, 6, 7, 2};
-        REQUIRE( s.twoSum(v, 11) == vector<int>({2, 4}) );
-    }
-
     ```
 
 - Test it with one-line !

@@ -3,7 +3,7 @@
 #include "solution.hpp"
 
 
-TEST_CASE( "TC for Two Sum", "[array]" ) {
+TEST_CASE( "TC for Two Sum", "[leetcode]" ) {
     Solution s;
     vector<int> v;
 

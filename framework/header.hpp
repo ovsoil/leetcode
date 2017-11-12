@@ -9,5 +9,5 @@ using namespace std;
 # define TEST_CASE(doc, case) int main()
 #else
 # define CATCH_CONFIG_MAIN
-# include "../Catch/single_include/catch.hpp"
+# include "../Catch2/single_include/catch.hpp"
 #endif

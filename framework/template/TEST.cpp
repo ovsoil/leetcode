@@ -3,7 +3,7 @@
 #include "solution.hpp"
 
 
-TEST_CASE( "Testcase doc string", "[case name]" ) {
+TEST_CASE( "Testcase doc string", "[tag]" ) {
     Solution s;
 
     REQUIRE( s.function_name(input) == output );
