@@ -3,7 +3,7 @@
 #include "solution.hpp"
 
 
-TEST_CASE( "Testcase for Implement strStr", "[leetcode]" ) {
+TEST_CASE( "Implement strStr()", "[Two Pointers][String]" ) {
     Solution s;
 
     SECTION("solution 01"){

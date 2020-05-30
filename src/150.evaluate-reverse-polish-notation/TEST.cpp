@@ -3,7 +3,7 @@
 #include "solution.hpp"
 
 
-TEST_CASE( "Testcase for Evaluate Reverse Polish Notation", "[]" ) {
+TEST_CASE( "Evaluate Reverse Polish Notation", "[Stack]" ) {
     Solution s;
     /*
        ["2", "1", "+", "3", "*"] -> ((2 + 1) * 3) -> 9

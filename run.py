@@ -2,22 +2,25 @@
 # -*- coding: utf-8 -*-
 
 import re
+import json
 import click
 import os
-import shutil
 import subprocess
 
+import api
+
 CC = 'clang++'
-CFLAGS = '-std=c++11'
+CFLAGS = '-std=c++14'
 INCS = ''
 UNITTEST = 'TEST.cpp'
 TARGET = 'target'
 SRC = 'src'
+PROBLEMS = 'problems'
 
 
 def build_map():
     qmap = {}
-    qid_regex = re.compile('(\d+).*')
+    qid_regex = re.compile(r'(\d+).*')
     dirs = [d for d in os.listdir(SRC) if os.path.isdir(os.path.join(SRC, d))]
     for folder in dirs:
         qid = qid_regex.search(folder)
@@ -27,13 +30,44 @@ def build_map():
 
 
 @click.command()
-@click.argument('problem_name')
-def gen(problem_name):
-    path = os.path.join('src', problem_name)
-    if not os.path.exists(path):
-        os.mkdir(path)
-    open('{}/solution.hpp'.format(path), 'a').close()
-    shutil.copy('framework/template/TEST.cpp', '{}/TEST.cpp'.format(path))
+@click.argument('problem_id')
+def gen(problem_id):
+    with open('problems.json', 'r') as fh:
+        data = json.load(fh)
+    title_slug = data.get(problem_id)
+    if title_slug is None:
+        data = api.get_all_problems()
+        title_slug = data.get(problem_id)
+        if title_slug is None:
+            print(f"No Problem with id = {problem_id}")
+            return
+
+    path = os.path.join('src', f'{problem_id}.{title_slug}')
+    if os.path.exists(path):
+        print(f"Problem {title_slug} exist!")
+        return
+
+    info = api.get_problem_info(title_slug)
+    snippet = ''
+    for snp in info['data']['question']['codeSnippets']:
+        if snp['lang'] == 'C++':
+            snippet = snp['code']
+            break
+    tags = [tag['name'] for tag in info['data']['question']['topicTags']]
+    title = info['data']['question']['title']
+    meta = json.loads(info['data']['question']['metaData'])
+    func_name = meta.get('name', 'function_name')
+
+    os.mkdir(path)
+    with open('{}/solution.hpp'.format(path), 'a') as fh:
+        fh.write(snippet)
+    with open('framework/template/TEST.cpp', 'r') as fh:
+        test_content = fh.read()
+    with open(os.path.join(path, 'TEST.cpp'), 'w') as fh:
+        fh.write(test_content.replace(
+            'Testcase doc string', title).replace(
+                '[tag]', ''.join([f'[{tag}]' for tag in tags])).replace(
+                    'function_name', func_name))
 
 
 @click.command()

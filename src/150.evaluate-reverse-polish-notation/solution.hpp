@@ -4,8 +4,10 @@ public:
         std::stack<int> s;
         for(auto token: tokens) {
             if ( token == "+" || token == "-" || token == "*" || token == "/" ) {
-                auto rh = s.top(); s.pop();
-                auto lh = s.top(); s.pop();
+                auto rh = s.top();
+                s.pop();
+                auto lh = s.top();
+                s.pop();
                 if ( token == "+") s.push(lh + rh);
                 if ( token == "-") s.push(lh - rh);
                 if ( token == "*") s.push(lh * rh);

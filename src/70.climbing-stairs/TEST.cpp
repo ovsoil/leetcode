@@ -3,7 +3,7 @@
 #include "solution.hpp"
 
 
-TEST_CASE( "Testcase for Climbing Stairs", "[leetcode]" ) {
+TEST_CASE( "Climbing Stairs", "[Dynamic Programming]" ) {
     Solution s;
 
     REQUIRE( s.climbStairs(2) == 2 );
