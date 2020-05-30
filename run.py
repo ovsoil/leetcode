@@ -47,7 +47,7 @@ def gen(problem_id):
         print(f"Problem {title_slug} exist!")
         return
 
-    info = api.get_problem_info(title_slug)
+    info = api.get_problem_info_zh(title_slug)
     snippet = ''
     for snp in info['data']['question']['codeSnippets']:
         if snp['lang'] == 'C++':
@@ -57,9 +57,16 @@ def gen(problem_id):
     title = info['data']['question']['title']
     meta = json.loads(info['data']['question']['metaData'])
     func_name = meta.get('name', 'function_name')
+    title_zh = info['data']['question']['translatedTitle'].replace(' ', '-')
+    content = info['data']['question']['content']
+    content_zh = info['data']['question']['translatedContent']
 
     os.mkdir(path)
-    with open('{}/solution.hpp'.format(path), 'a') as fh:
+    with open(os.path.join(path, f'{title_slug}.html'), 'a') as fh:
+        fh.write(content)
+    with open(os.path.join(path, f'{title_zh}.html'), 'a') as fh:
+        fh.write(content_zh)
+    with open(os.path.join(path, 'solution.hpp'), 'a') as fh:
         fh.write(snippet)
     with open('framework/template/TEST.cpp', 'r') as fh:
         test_content = fh.read()
