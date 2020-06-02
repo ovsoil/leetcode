@@ -10,7 +10,7 @@ import subprocess
 import api
 
 CC = 'clang++'
-CFLAGS = '-std=c++14'
+CFLAGS = '-std=c++17'
 INCS = ''
 UNITTEST = 'TEST.cpp'
 TARGET = 'target'
@@ -96,6 +96,7 @@ def test(problem_id, debug):
     if debug:
         compile_cmd += ['-DDEBUG']
 
+    print(compile_cmd)
     not run_command(compile_cmd) and run_command(['./{}'.format(TARGET)])
     run_command(['rm', TARGET])
 

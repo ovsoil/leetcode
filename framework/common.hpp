@@ -55,30 +55,19 @@ void printList(ListNode *l)
     cout << ']' << endl;
 }
 
-TreeNode* gen_tree(vector<int> input, TreeNode *node, int i, int n)
-{
-    if (i >= n || input[i] == INT_MIN)
+TreeNode* gen_binary_tree_helper(const json& input, TreeNode *root, int i, int n) {
+    if (i >= n || input[i] == nullptr)
         return nullptr;
-    node = new TreeNode(input[i]);
-    node->left = gen_tree(input, node->left, 2 * i + 1, n);
-    node->right = gen_tree(input, node->right, 2 * i + 2, n);
-    return node;
+    root = new TreeNode(input[i]);
+    root->left = gen_binary_tree_helper(input, root->left, 2 * i + 1, n);
+    root->right = gen_binary_tree_helper(input, root->right, 2 * i + 2, n);
+    return root;
 }
 
-TreeNode* gen_binary_tree(vector<int> input)
-{
-    if (input.empty())
-        return nullptr;
+TreeNode* gen_binary_tree(const string& in_str) {
+    json input = json::parse(in_str);
     TreeNode *root = nullptr;
-    return gen_tree(input, root, 0, input.size() - 1);
-}
-
-TreeNode* gen_b_tree(vector<int> input)
-{
-    if (input.empty())
-        return nullptr;
-    TreeNode *root = nullptr;
-    return gen_tree(input, root, 0, input.size() - 1);
+    return gen_binary_tree_helper(input, root, 0, input.size());
 }
 
 void preorder(TreeNode* root, vector<int>& result)
@@ -99,11 +88,4 @@ void inorder(TreeNode* root, vector<int>& result)
     inorder(root->right, result);
 }
 
-void print_json()
-{
-    json j = "{\"x\":[null,3,7,true,9,true,15,false,20,false]}"_json;
-    cout << j["x"].size() << endl;
-    string s = j.dump();
-    cout << s << endl;
-}
 #endif //_COMMON_H_
