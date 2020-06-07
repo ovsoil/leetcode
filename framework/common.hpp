@@ -55,19 +55,19 @@ void printList(ListNode *l)
     cout << ']' << endl;
 }
 
-TreeNode* gen_binary_tree_helper(const json& input, TreeNode *root, int i, int n) {
+TreeNode* gen_binary_tree(const json& input, TreeNode *root, int i, int n) {
     if (i >= n || input[i] == nullptr)
         return nullptr;
     root = new TreeNode(input[i]);
-    root->left = gen_binary_tree_helper(input, root->left, 2 * i + 1, n);
-    root->right = gen_binary_tree_helper(input, root->right, 2 * i + 2, n);
+    root->left = gen_binary_tree(input, root->left, 2 * i + 1, n);
+    root->right = gen_binary_tree(input, root->right, 2 * i + 2, n);
     return root;
 }
 
-TreeNode* gen_binary_tree(const string& in_str) {
+TreeNode* make_binary_tree(const string& in_str) {
     json input = json::parse(in_str);
     TreeNode *root = nullptr;
-    return gen_binary_tree_helper(input, root, 0, input.size());
+    return gen_binary_tree(input, root, 0, input.size());
 }
 
 void preorder(TreeNode* root, vector<int>& result)
@@ -86,6 +86,16 @@ void inorder(TreeNode* root, vector<int>& result)
     inorder(root->left, result);
     result.push_back(root->val);
     inorder(root->right, result);
+}
+
+bool compf(double a, double b) {
+    return fabs(a - b) < 0.00005;
+}
+
+template <typename T>
+inline constexpr typename std::remove_reference<T>::type &make_ref(T &&r) noexcept {
+    using U = typename std::remove_reference<T>::type;
+    return static_cast<U &>(r);
 }
 
 #endif //_COMMON_H_
