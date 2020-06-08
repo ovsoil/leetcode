@@ -1,0 +1,56 @@
+<p>给定一个二叉树，检查它是否是镜像对称的。</p>
+
+<p>&nbsp;</p>
+
+<p>例如，二叉树&nbsp;<code>[1,2,2,3,4,4,3]</code> 是对称的。</p>
+
+<pre>    1
+   / \
+  2   2
+ / \ / \
+3  4 4  3
+</pre>
+
+<p>&nbsp;</p>
+
+<p>但是下面这个&nbsp;<code>[1,2,2,null,3,null,3]</code> 则不是镜像对称的:</p>
+
+<pre>    1
+   / \
+  2   2
+   \   \
+   3    3
+</pre>
+
+<p>&nbsp;</p>
+
+<p><strong>进阶：</strong></p>
+
+<p>你可以运用递归和迭代两种方法解决这个问题吗？</p>
+        if (root == nullptr) {
+            return true;
+        }
+        vector<int> arr;
+        queue<TreeNode *> q;
+        q.push(root);
+        while (!q.empty()) {
+            TreeNode *node = q.front();
+            arr.push_back(node->val);    
+            q.pop();
+            if (node->left != nullptr)
+                q.push(node->left);
+            if (node->right != nullptr)
+                q.push(node->right);
+        }
+        int d = 0;
+        while (pow(2, (d + 1)) < arr.size()) {
+            int l = 2^d + 1;
+            int r = 2^(d + 1);
+            while (l < r)
+                if (arr[l++] != arr[r--])
+                {
+                    return false;
+                }
+            d++;
+        }
+        return true;
