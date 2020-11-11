@@ -42,22 +42,31 @@ def gen(problem_id):
             print(f"No Problem with id = {problem_id}")
             return
 
-    path = os.path.join('src', f'{problem_id}.{title_slug}')
-    if os.path.exists(path):
-        print(f"Problem {title_slug} exist!")
-        return
+    path = os.path.join('src', f'{problem_id:0>4}.{title_slug}')
+    #  if os.path.exists(path):
+    #      print(f"Problem {title_slug} exist!")
+    #      return
 
     info = api.get_problem_info_zh(title_slug)
-    snippet = ''
+    snippet_cpp = ''
+    snippet_go = ''
+    n = 0
     for snp in info['data']['question']['codeSnippets']:
         if snp['lang'] == 'C++':
-            snippet = snp['code']
-            break
+            snippet_cpp = snp['code']
+            n += 1
+        if snp['lang'] == 'Go':
+            snippet_go = snp['code']
+            n += 1
+        if n == 2:
+            break;
     tags = [tag['name'] for tag in info['data']['question']['topicTags']]
     title = info['data']['question']['title']
     meta = json.loads(info['data']['question']['metaData'])
     func_name = meta.get('name', 'function_name')
     title_zh = info['data']['question']['translatedTitle'].replace(' ', '-')
+    package_name = title_slug.replace('-', '')
+    test_name = title.replace(' ', '')
     content = info['data']['question']['content']
     content_zh = info['data']['question']['translatedContent']
 
@@ -67,7 +76,15 @@ def gen(problem_id):
     with open(os.path.join(path, f'{title_zh}.html'), 'a') as fh:
         fh.write(content_zh)
     with open(os.path.join(path, 'solution.hpp'), 'a') as fh:
-        fh.write(snippet)
+        fh.write(snippet_cpp)
+    with open(os.path.join(path, 'solution.go'), 'a') as fh:
+        fh.write(f'package {package_name}\n\n')
+        fh.write(f'// import (\n')
+        fh.write(f'//	"github.com/ovsoil/leetcode/framework/structures"\n')
+        fh.write(f'// )\n\n')
+        fh.write(f'// // Use structures.TreeNode\n')
+        fh.write(f'// type TreeNode = structures.TreeNode\n\n')
+        fh.write(snippet_go)
     with open('framework/template/TEST.cpp', 'r') as fh:
         test_content = fh.read()
     with open(os.path.join(path, 'TEST.cpp'), 'w') as fh:
@@ -76,6 +93,19 @@ def gen(problem_id):
                 '[tag]', ''.join([f'[{tag}]' for tag in tags])).replace(
                     'function_name', func_name))
 
+    with open('framework/template/test.go', 'r') as fh:
+        test_content = fh.read()
+    with open(os.path.join(path, 'solution_test.go'), 'w') as fh:
+        fh.write(test_content.replace(
+            'Testcase doc string', title).replace(
+                '[tag]', ''.join([f'[{tag}]' for tag in tags])).replace(
+                    'PACKAGENAME', package_name).replace(
+                        'TESTNAME', test_name).replace(
+                            'FUNCNAME', func_name))
+    with open('framework/template/go.mod', 'r') as fh:
+        test_content = fh.read()
+    with open(os.path.join(path, 'go.mod'), 'w') as fh:
+        fh.write(test_content.replace('PACKAGENAME', package_name))
 
 @click.command()
 @click.option('--debug', '-d', is_flag=True)
